@@ -1,14 +1,14 @@
 ## Problems to solve
 
-There are three obvious obstables hindering the development of DApps on CKB.
+There are three obvious obstacles hindering the development of DApps on CKB.
 
 ### First: separate runtimes
 
 CKB adopts Cell model which is a generalization of UTXO model so only a **function of state verification** is running on-chain, that's the core of a DApp and theoretically that's all of a DApp.
 
-But a real-word DApp is for users who are not good at mathematics or programming so the logic of the DApp will be exposed by a graphical interface and a set of prescribed actions. The team of a DApp has to 
+But a real-world DApp is for users who are not good at mathematics or programming so the logic of the DApp will be exposed by a graphical interface and a set of prescribed actions. The team of a DApp has to 
 
-  1. re-implement **function of state verification on-chain** off-chain for testing;
+  1. re-implement **function of state verification on-chain** off the chain for testing;
   2. define a **state transition equation** following the **function of state verification** for prescribed actions;
   3. define algorithms to get ideal parameters for the **state transition equation**, namely `input cells` from CKB, and implement a server to map kv data into relational data for graphical interface.
 
@@ -16,12 +16,12 @@ A mass of off-chain works are introduced because runtimes of on-chain and off-ch
 
 **function of state verification on-chain** is totally a pure function which returns code_0 for success and code_other for failure, all its arguments are determined so the result is predictable.
 
-**function of state verification off-chain** is a rehearsal or replay of **function of state verification off-chain**, they share the same logic but the one off-chain may be re-implemented because the one on-chain is based on rust which is hard for most programmers.
+**function of state verification off-chain** is a rehearsal or replay of **function of state verification on-chain**, they share the same logic but the one off-chain may be re-implemented because the one on-chain is based on rust which is hard for most programmers.
 
 **state transition equation** is reversed from the **function of state verification**, this is easy to understand and used in ethereum contract, 
 
 ```
-// let's define the function of state verification and expect it be be 0
+// let's define the function of state verification and expect it be 0
 fn(action)(current_state, new_state) = 0
 
 // then the state transition equation will be deduced
@@ -96,7 +96,7 @@ There'll be three basic data models used in `Kuai` based DApps: `Store`, `Contra
 
 The basic function of cells in CKB is storing data. But data are meaningless without schema, so the first basic model introduced by `Kuai` is named `Store` which is used to transform plain data into a structured data with schema, similar to [ORM](https://www.wikiwand.com/en/Object-relational_mapping)
 
-Note that a `Store` model could be a group of cells matching the same `pattern` and working as an entity so it could be regarded as a virutal DApp. Say we have 2 DApps in `School Roster Store` models, each of them consists of many `Student Store` models. And we are going to build a `Sports Meeting` DApp, a new `Sports Meeting Store` model could be created and consists of partial `Student Store` from School A and B respectively, it should work as same as a `School Roster` DApp.
+Note that a `Store` model could be a group of cells matching the same `pattern` and working as an entity, so it could be regarded as a virtual DApp. Say we have 2 DApps in `School Roster Store` models, each of them consists of many `Student Store` models. And we are going to build a `Sports Meeting` DApp, a new `Sports Meeting Store` model could be created and consist of partial `Student Store` from School A and B, respectively, it should work as same as a `School Roster` DApp.
 
 <sub>Sidenote:
 For JavaScript developers, the `Repository` concept in [TypeORM](https://github.com/typeorm/typeorm/blob/master/docs/working-with-repository.md) is quite similar, or to say, `Store` is a simplified `Repository` in TypeORM. `Store` has its own schema and accepts a pattern to load data from CKB, just as `Repository` accepts an `Entity` and builds a query string to load data from database.
@@ -126,7 +126,7 @@ A `Store` model should have 7 basic interfaces
 - Sync(blockNumber?): will load and update data from the chain at latest(or specific block) global state
 - Get(path): will read value of specified path
 - Set(path, value): will set given value at specified path
-- Delete: (path): remove key/value at specified path
+- Delete(path): remove key/value at the specified path
 
 ##### Contract
 
@@ -147,7 +147,7 @@ A generally used token must have some methods based on `Contract`
 - Send(from, to, tokenId, amount): Send a token
 - Stake(address, dapp, tokenId, amount, locktime?): stake into a dapp and get staking tokens
 - Redeem(address, dapp, tokenId, amount): unstake from a dapp and burn a staking token
-- Lock(address, amount, tokenId, locktime): lock tokens, for cases like pre-sale, bounty of a team
+- Lock(address, tokenId, amount, locktime): lock tokens, for cases like pre-sale, bounty of a team
 - Unlock(address, tokenId, amount): unlock tokens
 - Combine(token): combine two `Token` models into one
 - GetBalance(address, tokenId): get token balance of a given address

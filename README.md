@@ -61,7 +61,7 @@ What's worse, some DApp teams found the devtools were not enough for them so the
 
 ## How other ecologies are solving these problems
 
-For the separate runtimes issue introduced by UTXO model, there's a framework named `run`(https://run.network/) aiming at propagating a token protocol for universal DApps.
+For the separate runtimes issue introduced by UTXO model, there's a framework named `run`(https://web.archive.org/web/20230328142855/https://run.network/) aiming at propagating a token protocol for universal DApps.
 
 A data model named `Jig` is brought in as the most basic unit of an interactive object to build a skyscraper from bricks. Imagine we are building a toy vehicle with lego blocks, every two blocks can be easily connected even they are in various shapes because they share a unified interface.
 
